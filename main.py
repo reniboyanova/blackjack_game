@@ -1,39 +1,66 @@
 import random
 from art import logo
 
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 my_cards = {
     'score': 0,
     'current_cards': [],
 }
+
 oponent_cards = {
     'score': 0,
     'current_cards': [],
 }
 
+
+def deal_card():
+    """Returns a random card from the deck"""
+    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+    card = random.choice(cards)
+    return card
+
+
+def calculate_score(cards):
+    """Returns the total score of the decks ---> "the computer's" and "the player's" """
+    if sum(cards) == 21 and len(cards) == 2:
+        return 0
+
+    if 11 in cards and sum(cards) > 21:
+        cards.remove(11)
+        cards.append(1)
+
+    return sum(cards)
+
+
+for _ in range(2):
+    my_cards['current_cards'].append(deal_card())
+    oponent_cards['current_cards'].append(deal_card())
+
+my_cards['score'] = calculate_score(my_cards['current_cards'])
+oponent_cards['score'] = calculate_score(oponent_cards['current_cards'])
+
 have_winner = my_cards['score'] >= 21 or oponent_cards['score'] >= 21
 
 
-def choose_two_cards(deck_of_cards, my_deck):
-    first_card = random.choice(deck_of_cards)
-    second_card = random.choice(deck_of_cards)
-
-    my_deck['current_cards'].append(first_card)
-    my_deck['current_cards'].append(second_card)
-    my_deck['score'] += (first_card + second_card)
-
-    return my_deck
-
-
-def choose_one_card(deck_of_cards, deck):
-    current_card = random.choice(deck_of_cards)
-
-    if current_card == 11 and deck['score'] >= 21:
-        current_card = 1
-
-    deck['current_cards'].append(current_card)
-    deck['score'] += current_card
-    return deck
+# def choose_two_cards(deck_of_cards, my_deck):
+#     first_card = random.choice(deck_of_cards)
+#     second_card = random.choice(deck_of_cards)
+#
+#     my_deck['current_cards'].append(first_card)
+#     my_deck['current_cards'].append(second_card)
+#     my_deck['score'] += (first_card + second_card)
+#
+#     return my_deck
+#
+#
+# def choose_one_card(deck_of_cards, deck):
+#     current_card = random.choice(deck_of_cards)
+#
+#     if current_card == 11 and deck['score'] >= 21:
+#         current_card = 1
+#
+#     deck['current_cards'].append(current_card)
+#     deck['score'] += current_card
+#     return deck
 
 
 turns = 0
